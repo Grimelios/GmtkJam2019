@@ -1,6 +1,7 @@
 ﻿using Engine;
 using Engine.Core._2D;
 using Engine.Graphics._2D;
+using Engine.Messaging;
 using Engine.UI;
 using Engine.View;
 using GmtkJam2019.Entities;
@@ -19,7 +20,7 @@ namespace GmtkJam2019
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
-			glClearColor(1, 1, 1, 1);
+			glClearColor(0, 0, 0, 1);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPrimitiveRestartIndex(Constants.RestartIndex);
@@ -49,6 +50,8 @@ namespace GmtkJam2019
 		protected override void Update(float dt)
 		{
 			camera.Update(dt);
+
+			MessageSystem.ProcessChanges();
 		}
 
 		protected override void Draw()

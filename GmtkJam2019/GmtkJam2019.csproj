@@ -48,8 +48,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Core\HybridEntity.cs" />
     <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\PlayerController.cs" />
+    <Compile Include="Entities\PlayerControls.cs" />
+    <Compile Include="Entities\PlayerData.cs" />
     <Compile Include="MainGame.cs" />
+    <Compile Include="Physics\HybridBody.cs" />
+    <Compile Include="Physics\HybridWorld.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="UI\PlayerVisionDisplay.cs" />
   </ItemGroup>
