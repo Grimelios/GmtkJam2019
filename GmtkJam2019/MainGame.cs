@@ -19,7 +19,7 @@ namespace GmtkJam2019
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
-			glClearColor(0, 0, 0, 1);
+			glClearColor(1, 1, 1, 1);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPrimitiveRestartIndex(Constants.RestartIndex);
@@ -42,6 +42,8 @@ namespace GmtkJam2019
 
 			canvas = new Canvas();
 			canvas.Add(visionDisplay);
+
+			visionDisplay.RemoveEye();
 		}
 
 		protected override void Update(float dt)
