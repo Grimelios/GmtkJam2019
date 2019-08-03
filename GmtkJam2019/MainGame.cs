@@ -119,7 +119,7 @@ namespace GmtkJam2019
 
 			var renderer = scene.Renderer;
 			renderer.Add(map);
-			renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0));
+			renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0.1f));
 
 			// Quick hack to give all enemies easy access to the player.
 			Enemy.Player = player;
@@ -145,18 +145,10 @@ namespace GmtkJam2019
 		{
 			MessageSystem.Unsubscribe(this);
 		}
-
-		private float rotation;
-
+		
 		protected override void Update(float dt)
 		{
-			float x = (float)Math.Cos(rotation);
-			float y = (float)Math.Sin(rotation);
-
-			rotation += dt / 3;
-
 			scene.Update(dt);
-			scene.Renderer.Light.Direction = Utilities.Normalize(new vec3(x, -0.25f, y));
 			world.Step(dt);
 			camera.Update(dt);
 

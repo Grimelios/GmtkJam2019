@@ -66,6 +66,7 @@ namespace GmtkJam2019.Entities.Core
 		{
 			var sprite = new Sprite3D(texture);
 			sprite.Position = position;
+			sprite.Camera = scene.Camera;
 
 			scene.Renderer.Add(sprite);
 			Attach(sprite);
