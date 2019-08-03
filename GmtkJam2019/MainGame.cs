@@ -166,11 +166,6 @@ namespace GmtkJam2019
 			mainTarget.Apply();
 			scene.Draw();
 
-			if (player.AimLine != null)
-			{
-				primitives.Draw(player.AimLine, Color.Yellow);
-			}
-
 			if (player.ShotLine != null)
 			{
 				primitives.Draw(player.ShotLine, Color.Red);

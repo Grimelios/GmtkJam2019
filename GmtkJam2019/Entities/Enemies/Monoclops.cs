@@ -1,4 +1,4 @@
-﻿using GmtkJam2019.Entities.Core;
+﻿using GlmSharp;
 
 namespace GmtkJam2019.Entities.Enemies
 {
@@ -6,6 +6,7 @@ namespace GmtkJam2019.Entities.Enemies
 	{
 		public Monoclops() : base(EnemyTypes.Monoclops)
 		{
+			Scale = new vec2(2);
 		}
 	}
 }

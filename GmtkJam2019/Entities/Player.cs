@@ -54,8 +54,7 @@ namespace GmtkJam2019.Entities
 		}
 
 		public vec3 Eye => Position + new vec3(0, playerData.ViewOffset, 0);
-
-		public Line3D AimLine { get; set; }
+		
 		public Line3D ShotLine { get; set; }
 		public Line3D NormalLine { get; set; }
 

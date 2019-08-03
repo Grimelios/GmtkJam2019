@@ -17,8 +17,6 @@ namespace GmtkJam2019.Weapons
 		public override void PrimaryFire(Scene scene, vec3 direction)
 		{
 			var player = (Player)Owner;
-			player.AimLine = new Line3D(Position, Position + direction * 1.5f);
-
 			var results = PhysicsHelper.Raycast(player.Eye, direction, Range, scene);
 
 			if (results != null)

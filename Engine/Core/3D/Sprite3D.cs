@@ -12,7 +12,7 @@ namespace Engine.Core._3D
 	public class Sprite3D : IRenderable3D, IScalable2D, IColorable, IDisposable
 	{
 		// This value scales pixels to meters (or in-game units). When unscaled, every X pixels spans one meter.
-		private const int PixelDivisor = 100;
+		public const int PixelDivisor = 100;
 		
 		private vec2 scale;
 		private ivec2 origin;
@@ -41,9 +41,6 @@ namespace Engine.Core._3D
 		public quat Orientation { get; set; }
 		public Color Color { get; set; }
 
-		// Bit of a quick hack to allow 3D sprites to billboard towards the camera properly.
-		public Camera3D Camera { get; set; }
-
 		public vec2 Scale
 		{
 			get => scale;
@@ -65,15 +62,6 @@ namespace Engine.Core._3D
 
 		public void RecomputeWorldMatrix()
 		{
-			// This specific kind of billboarding works for a Doom-style FPS (where sprites only billboard along a
-			// vertical axis).
-			if (IsBillboarded)
-			{
-				float angle = Utilities.Angle(Position.swizzle.xz, Camera.Position.swizzle.xz) - Constants.PiOverTwo;
-
-				Orientation = quat.FromAxisAngle(-angle, vec3.UnitY);
-			}
-
 			// By shifting the world matrix using the origin, all sprites (regardless of transform or alignment) can be
 			// rendered using the same unit square in GPU memory.
 			vec3 correction = new vec3((vec2)origin / PixelDivisor, 0) * Orientation;

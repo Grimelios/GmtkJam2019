@@ -11,7 +11,9 @@ namespace GmtkJam2019.Entities.Core
 		public int MaxHealth { get; set; }
 
 		public virtual Texture CollisionTexture => null;
-		public virtual Rectangle CollisionBounds => null;
+
+		public virtual vec2 CollisionBounds => vec2.Zero;
+		public virtual vec2 Scale { get; set; }
 
 		protected virtual void OnDeath()
 		{

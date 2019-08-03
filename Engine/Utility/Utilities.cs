@@ -131,6 +131,11 @@ namespace Engine.Utility
 			return v > max ? max : v;
 		}
 
+		public static float Dot(vec2 v1, vec2 v2)
+		{
+			return vec2.Dot(v1, v2);
+		}
+
 		public static float Dot(vec3 v1, vec3 v2)
 		{
 			return vec3.Dot(v1, v2);

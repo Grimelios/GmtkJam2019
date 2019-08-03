@@ -35,6 +35,12 @@ namespace Engine.Graphics._3D.Rendering
 				vec2.Ones
 			};
 
+			// Dividing each point by two gives the entire quad a unit length of one.
+			for (int i = 0; i < points.Length; i++)
+			{
+				points[i] /= 2;
+			}
+
 			// Modifying the source order causes sprites to appear the right way up (and not flipped horizontally).
 			vec2[] sources =
 			{
