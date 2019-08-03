@@ -39,12 +39,11 @@ namespace Engine.Graphics._3D.Rendering
 
 			glBindVertexArray(shadowVao);
 			glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, (void*)0);
-			//glVertexAttribPointer(1, 2, GL_FLOAT, false, stride, (void*)(sizeof(float) * 3));
-			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(1, 2, GL_FLOAT, false, stride, (void*)(sizeof(float) * 3));
 
 			for (int i = 0; i <= 1; i++)
 			{
-				//glEnableVertexAttribArray((uint)i);
+				glEnableVertexAttribArray((uint)i);
 			}
 		}
 
