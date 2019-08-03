@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Core._2D;
+using Engine.Interfaces;
 using Engine.Interfaces._2D;
 using Engine.Interfaces._3D;
 using Engine.Utility;
@@ -7,7 +8,7 @@ using GlmSharp;
 
 namespace Engine.Core._3D
 {
-	public class Sprite3D : IRenderable3D, IScalable2D, IDisposable
+	public class Sprite3D : IRenderable3D, IScalable2D, IColorable, IDisposable
 	{
 		// This value scales pixels to meters (or in-game units). When unscaled, every X pixels spans one meter.
 		private const int PixelDivisor = 100;
@@ -29,6 +30,7 @@ namespace Engine.Core._3D
 				new ivec2(source.Width, source.Height) / 2;
 			Scale = vec2.Ones;
 			Orientation = quat.Identity;
+			Color = Color.White;
 			IsShadowCaster = true;
 		}
 
@@ -36,6 +38,7 @@ namespace Engine.Core._3D
 		public mat4 WorldMatrix { get; private set; }
 		public vec3 Position { get; set; }
 		public quat Orientation { get; set; }
+		public Color Color { get; set; }
 
 		public vec2 Scale
 		{

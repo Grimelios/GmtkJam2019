@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Engine.Utility;
 using GlmSharp;
 
 namespace Engine.Core
 {
-	public class Color
+	public struct Color
 	{
 		public static readonly Color Black = new Color(0);
 		public static readonly Color White = new Color(255);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Engine;
+using Engine.Core;
 using Engine.Core._2D;
 using Engine.Core._3D;
 using Engine.Graphics;
@@ -20,12 +21,14 @@ namespace GmtkJam2019.Entities.Core
 
 		private bool selfUpdate;
 
+		protected vec3 position;
+		protected ComponentCollection components;
+
 		protected HybridEntity()
 		{
 			attachments = new List<IPositionable3D>();
+			components = new ComponentCollection();
 		}
-
-		protected vec3 position;
 
 		public virtual vec3 Position
 		{
@@ -117,6 +120,8 @@ namespace GmtkJam2019.Entities.Core
 
 		public virtual void Update(float dt)
 		{
+			components.Update(dt);
+
 			if (ControllingBody != null)
 			{
 				selfUpdate = true;

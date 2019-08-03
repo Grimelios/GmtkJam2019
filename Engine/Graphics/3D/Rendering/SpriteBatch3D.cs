@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Engine.Core;
 using Engine.Core._3D;
 using Engine.Lighting;
 using Engine.Shaders;
@@ -116,6 +117,7 @@ namespace Engine.Graphics._3D.Rendering
 		public override unsafe void Draw(Sprite3D item, mat4? vp)
 		{
 			PrepareShader(item, vp);
+			Shader.SetUniform("tint", item.Color.ToVec4());
 			
 			glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, (void*)0);
 		}

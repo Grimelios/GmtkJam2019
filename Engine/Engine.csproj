@@ -192,6 +192,7 @@
     <Compile Include="Shapes\3D\Line3D.cs" />
     <Compile Include="Smoothers\3D\OrientationSmoother.cs" />
     <Compile Include="Smoothers\3D\PositionSmoother3D.cs" />
+    <Compile Include="Smoothers\ColorSmoother.cs" />
     <Compile Include="Smoothers\Smoother.cs" />
     <Compile Include="Timing\RepeatingTimer.cs" />
     <Compile Include="Timing\SingleTimer.cs" />
