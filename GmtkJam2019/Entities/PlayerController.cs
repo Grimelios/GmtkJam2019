@@ -24,6 +24,9 @@ namespace GmtkJam2019.Entities
 		private float pitch;
 		private float yaw;
 
+		// This value is stored for use in firing weapons.
+		private vec3 aim;
+
 		public PlayerController(Player player, PlayerData playerData, Camera3D camera)
 		{
 			this.player = player;
@@ -50,6 +53,7 @@ namespace GmtkJam2019.Entities
 		{
 			ProcessAim((MouseData)data.GetData(InputTypes.Mouse));
 			ProcessRunning(data, dt);
+			ProcessAttack(data);
 		}
 
 		private void ProcessAim(MouseData data)
@@ -83,6 +87,7 @@ namespace GmtkJam2019.Entities
 
 			camera.Orientation = quat.FromAxisAngle(pitch, vec3.UnitX) * quat.FromAxisAngle(yaw, vec3.UnitY);
 			player.Rotation = yaw;
+			aim = -vec3.UnitZ * camera.Orientation;
 		}
 
 		private void ProcessRunning(FullInputData data, float dt)
@@ -151,6 +156,16 @@ namespace GmtkJam2019.Entities
 			}
 
 			body.Velocity = new vec3(v.x, velocity.y, v.y);
+		}
+
+		private void ProcessAttack(FullInputData data)
+		{
+			var weapon = player.Weapon;
+
+			if (data.Query(controls.Attack, InputStates.PressedThisFrame))
+			{
+				weapon.PrimaryFire(player.Scene, aim);
+			}
 		}
 	}
 }

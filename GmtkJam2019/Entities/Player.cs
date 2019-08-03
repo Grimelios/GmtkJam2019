@@ -1,9 +1,11 @@
 ﻿using Engine.Shapes._2D;
+using Engine.Shapes._3D;
 using Engine.View;
 using GlmSharp;
 using GmtkJam2019.Entities.Core;
 using GmtkJam2019.Physics;
 using GmtkJam2019.UI;
+using GmtkJam2019.Weapons;
 
 namespace GmtkJam2019.Entities
 {
@@ -33,6 +35,8 @@ namespace GmtkJam2019.Entities
 			}
 		}
 
+		public Weapon Weapon { get; private set; }
+
 		public override vec3 Position
 		{
 			get => base.Position;
@@ -40,9 +44,20 @@ namespace GmtkJam2019.Entities
 			{
 				camera.Position = position + new vec3(0, playerData.ViewOffset, 0);
 
+				if (Weapon != null)
+				{
+					Weapon.Position = value;
+				}
+
 				base.Position = value;
 			}
 		}
+
+		public vec3 Eye => Position + new vec3(0, playerData.ViewOffset, 0);
+
+		public Line3D AimLine { get; set; }
+		public Line3D ShotLine { get; set; }
+		public Line3D NormalLine { get; set; }
 
 		public override void Initialize(Scene scene)
 		{
@@ -62,6 +77,12 @@ namespace GmtkJam2019.Entities
 		{
 			visionDisplay.RemoveEye();
 			camera.IsOrthographic = true;
+		}
+
+		public void Equip(Weapon weapon)
+		{
+			Weapon = weapon;
+			weapon.Owner = this;
 		}
 	}
 }

@@ -69,12 +69,17 @@
     <Compile Include="Physics\GroundVisualizer.cs" />
     <Compile Include="Physics\HybridBody.cs" />
     <Compile Include="Physics\HybridWorld.cs" />
+    <Compile Include="Physics\PhysicsHelper.cs" />
+    <Compile Include="Physics\RaycastResults.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Sensors\HybridSensor.cs" />
     <Compile Include="Sensors\HybridSpace.cs" />
     <Compile Include="Settings\GameSettings.cs" />
     <Compile Include="UI\PlayerVisionDisplay.cs" />
+    <Compile Include="UI\Reticle.cs" />
     <Compile Include="UI\SpeechDisplay.cs" />
+    <Compile Include="Weapons\Pistol.cs" />
+    <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Textures\Grey.png">
@@ -93,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Json\" />
-    <Folder Include="Weapons\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Textures\Link.png">

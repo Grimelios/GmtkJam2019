@@ -21,18 +21,13 @@ namespace Engine.Core
 
 		public static Color Lerp(Color start, Color end, float t)
 		{
-			byte r = Utilities.Lerp(start.r, end.r, t);
-			byte g = Utilities.Lerp(start.g, end.g, t);
-			byte b = Utilities.Lerp(start.b, end.b, t);
-			byte a = Utilities.Lerp(start.a, end.a, t);
+			byte r = Utilities.Lerp(start.R, end.R, t);
+			byte g = Utilities.Lerp(start.G, end.G, t);
+			byte b = Utilities.Lerp(start.B, end.B, t);
+			byte a = Utilities.Lerp(start.A, end.A, t);
 
 			return new Color(r, g, b, a);
 		}
-
-		private byte r;
-		private byte g;
-		private byte b;
-		private byte a;
 
 		public Color(byte value) : this(value, value, value, 255)
 		{
@@ -44,25 +39,30 @@ namespace Engine.Core
 
 		public Color(byte r, byte g, byte b, byte a)
 		{
-			this.r = r;
-			this.g = g;
-			this.b = b;
-			this.a = a;
+			R = r;
+			G = g;
+			B = b;
+			A = a;
 		}
+
+		public byte R { get; set; }
+		public byte G { get; set; }
+		public byte B { get; set; }
+		public byte A { get; set; }
 
 		public float ToFloat()
 		{
-			return BitConverter.ToSingle(new [] { r, g, b, a }, 0);
+			return BitConverter.ToSingle(new [] { R, G, B, A }, 0);
 		}
 
 		public vec3 ToVec3()
 		{
-			return new vec3(r, g, b) / 255;
+			return new vec3(R, G, B) / 255;
 		}
 
 		public vec4 ToVec4()
 		{
-			return new vec4(r, g, b, a) / 255;
+			return new vec4(R, G, B, A) / 255;
 		}
 	}
 }

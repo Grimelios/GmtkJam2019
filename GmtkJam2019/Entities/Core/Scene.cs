@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Engine;
+using Engine.Graphics._3D;
 using Engine.Graphics._3D.Rendering;
 using Engine.Interfaces;
 using Engine.View;
@@ -25,6 +26,9 @@ namespace GmtkJam2019.Entities.Core
 		public HybridSpace Space { get; set; }
 		public HybridWorld World { get; set; }
 		public MasterRenderer3D Renderer { get; }
+
+		// This is the static mesh used to represent the map. It's exposed publicly to faciliate ray-traced weapons.
+		public Mesh WorldMesh { get; set; }
 
 		public void Add(HybridEntity entity)
 		{

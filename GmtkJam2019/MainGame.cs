@@ -19,6 +19,7 @@ using GmtkJam2019.Physics;
 using GmtkJam2019.Sensors;
 using GmtkJam2019.Settings;
 using GmtkJam2019.UI;
+using GmtkJam2019.Weapons;
 using static Engine.GL;
 using static Engine.GLFW;
 
@@ -36,6 +37,8 @@ namespace GmtkJam2019
 		private HybridWorld world;
 		private Scene scene;
 		private GameSettings settings;
+		private PrimitiveRenderer3D primitives;
+		private Player player;
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
@@ -54,7 +57,8 @@ namespace GmtkJam2019
 			camera.OrthoHeight = Properties.GetFloat("camera.ortho.height");
 			camera.NearPlane = Properties.GetFloat("camera.near.plane");
 			camera.FarPlane = Properties.GetFloat("camera.far.plane");
-			//camera.IsOrthographic = true;
+
+			primitives = new PrimitiveRenderer3D(camera, 10000, 1000);
 
 			vec2[] border =
 			{
@@ -93,12 +97,16 @@ namespace GmtkJam2019
 			settings = new GameSettings();
 
 			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
-			Player player = new Player(camera);
+
+			player = new Player(camera);
 			player.Position = new vec3(0, 1, 4);
 			player.VisionDisplay = visionDisplay;
 			player.Controller.Settings = settings;
+			player.Equip(new Pistol());
 
 			sprite3D = new Sprite3D("Link.png");
+
+			Model map = new Model("Demo.obj");
 
 			scene = new Scene
 			{
@@ -108,9 +116,10 @@ namespace GmtkJam2019
 			};
 
 			scene.Add(player);
+			scene.WorldMesh = map.Mesh;
 
 			var renderer = scene.Renderer;
-			renderer.Add(new Model("Demo.obj"));
+			renderer.Add(map);
 			renderer.Add(sprite3D);
 			renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0));
 
@@ -119,7 +128,7 @@ namespace GmtkJam2019
 
 			canvas = new Canvas();
 			canvas.Add(visionDisplay);
-			canvas.Add(new GroundVisualizer(world));
+			canvas.Add(new Reticle());
 
 			MessageSystem.Subscribe(this, CoreMessageTypes.ResizeWindow, (messageType, data, dt) =>
 			{
@@ -158,6 +167,19 @@ namespace GmtkJam2019
 			scene.Renderer.DrawTargets();
 			mainTarget.Apply();
 			scene.Draw();
+
+			if (player.AimLine != null)
+			{
+				primitives.Draw(player.AimLine, Color.Yellow);
+			}
+
+			if (player.ShotLine != null)
+			{
+				primitives.Draw(player.ShotLine, Color.Red);
+				primitives.Draw(player.NormalLine, Color.Green);
+			}
+
+			primitives.Flush();
 
 			// Render 2D targets.
 			glDisable(GL_DEPTH_TEST);
