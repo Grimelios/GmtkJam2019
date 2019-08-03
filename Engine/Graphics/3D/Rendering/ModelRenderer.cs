@@ -1,5 +1,4 @@
-﻿using Engine.Core;
-using Engine.Core._3D;
+﻿using Engine.Core._3D;
 using Engine.Lighting;
 using Engine.Shaders;
 using GlmSharp;
@@ -19,8 +18,8 @@ namespace Engine.Graphics._3D.Rendering
 
 		public ModelRenderer(GlobalLight light) : base(light)
 		{
-			int bufferCapacity = Properties.GetInt("model.batch.buffer.capacity");
-			int indexCapacity = Properties.GetInt("model.batch.index.capacity");
+			int bufferCapacity = Properties.GetInt("model.buffer.capacity");
+			int indexCapacity = Properties.GetInt("model.index.capacity");
 
 			GLUtilities.AllocateBuffers(bufferCapacity, indexCapacity, out bufferId, out indexId, GL_STATIC_DRAW);
 
@@ -32,7 +31,7 @@ namespace Engine.Graphics._3D.Rendering
 			shader.AddAttribute<float>(3, GL_FLOAT);
 			shader.Initialize();
 			shader.Use();
-			//shader.SetUniform("shadowSampler", 0);
+			shader.SetUniform("shadowSampler", 0);
 			shader.SetUniform("textureSampler", 1);
 
 			Bind(shader, bufferId, indexId);
@@ -124,13 +123,12 @@ namespace Engine.Graphics._3D.Rendering
 			Shader.Apply();
 			Shader.SetUniform("lightDirection", Light.Direction);
 			Shader.SetUniform("lightColor", Light.Color.ToVec3());
-			//Shader.SetUniform("ambientIntensity", Light.AmbientIntensity);
+			Shader.SetUniform("ambientIntensity", Light.AmbientIntensity);
 		}
 
 		protected override void Apply(Mesh key)
 		{
-			glActiveTexture(GL_TEXTURE0 + 1);
-			glBindTexture(GL_TEXTURE0 + 1, key.Texture.Id);
+			key.Texture.Bind(1);
 		}
 
 		public override unsafe void Draw(Model item, mat4? vp)
@@ -145,7 +143,7 @@ namespace Engine.Graphics._3D.Rendering
 
 				Shader.SetUniform("orientation", orientation.ToMat4);
 				Shader.SetUniform("mvp", vp.Value * world);
-				//Shader.SetUniform("lightBiasMatrix", Light.BiasMatrix * world);
+				Shader.SetUniform("lightBiasMatrix", Light.BiasMatrix * world);
 			}
 
 			glDrawElementsBaseVertex(GL_TRIANGLES, (uint)handle.Count, GL_UNSIGNED_SHORT, (void*)handle.Offset,

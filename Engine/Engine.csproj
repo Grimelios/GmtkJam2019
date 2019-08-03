@@ -79,6 +79,12 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="App.config" />
+    <None Include="Content\Shaders\Model.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Shaders\Model.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Shaders\ModelShadow.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

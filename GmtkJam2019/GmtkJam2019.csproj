@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Content\Meshes\Cube.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Meshes\Demo.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

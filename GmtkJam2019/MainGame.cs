@@ -5,8 +5,10 @@ using Engine.Core._2D;
 using Engine.Core._3D;
 using Engine.Graphics._2D;
 using Engine.Graphics._3D;
+using Engine.Interfaces;
 using Engine.Messaging;
 using Engine.UI;
+using Engine.Utility;
 using Engine.View;
 using GlmSharp;
 using GmtkJam2019.Entities;
@@ -19,7 +21,7 @@ using static Engine.GL;
 
 namespace GmtkJam2019
 {
-	public class MainGame : Game
+	public class MainGame : Game, IReceiver
 	{
 		private SpriteBatch sb;
 		private RenderTarget mainTarget;
@@ -29,11 +31,11 @@ namespace GmtkJam2019
 		private HybridSpace space;
 		private HybridWorld world;
 		private Scene scene;
-		private PrimitiveRenderer3D primitives;
+		private Model model;
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
-			glClearColor(1, 1, 1, 1);
+			glClearColor(0, 0, 0, 1);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPrimitiveRestartIndex(Constants.RestartIndex);
@@ -41,9 +43,13 @@ namespace GmtkJam2019
 			Properties.Load("Render.properties");
 
 			camera = new Camera3D();
-			camera.Position = new vec3(0, 4, 4);
+			camera.Position = new vec3(0, 8, 8);
 			camera.Orientation = mat4.LookAt(camera.Position, vec3.Zero, vec3.UnitY).ToQuaternion;
-			camera.IsOrthographic = true;
+			camera.OrthoWidth = Properties.GetFloat("camera.ortho.width");
+			camera.OrthoHeight = Properties.GetFloat("camera.ortho.height");
+			camera.NearPlane = Properties.GetFloat("camera.near.plane");
+			camera.FarPlane = Properties.GetFloat("camera.far.plane");
+			//camera.IsOrthographic = true;
 
 			sb = new SpriteBatch();
 			space = new HybridSpace();
@@ -61,8 +67,10 @@ namespace GmtkJam2019
 				World = world
 			};
 
-			var model = new Model("Demo.obj");
+			model = new Model("Demo.obj");
+
 			scene.Renderer.Add(model);
+			scene.Renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0));
 
 			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
 			Player player = new Player(camera);
@@ -76,7 +84,22 @@ namespace GmtkJam2019
 
 			visionDisplay.RemoveEye();
 
-			primitives = new PrimitiveRenderer3D(camera, 10000, 10000);
+			MessageSystem.Subscribe(this, CoreMessageTypes.ResizeWindow, (messageType, data, dt) =>
+			{
+				mainSprite.ScaleTo(Resolution.WindowWidth, Resolution.WindowHeight);
+			});
+
+			// Calling this function here is required to ensure that all classes receive initial resize messages.
+			MessageSystem.ProcessChanges();
+			MessageSystem.Send(CoreMessageTypes.ResizeRender, Resolution.RenderDimensions);
+			MessageSystem.Send(CoreMessageTypes.ResizeWindow, Resolution.WindowDimensions);
+		}
+
+		public List<MessageHandle> MessageHandles { get; set; }
+
+		public void Dispose()
+		{
+			MessageSystem.Unsubscribe(this);
 		}
 
 		protected override void Update(float dt)
@@ -84,6 +107,7 @@ namespace GmtkJam2019
 			scene.Update(dt);
 			world.Step(dt);
 			camera.Update(dt);
+			model.Orientation *= quat.FromAxisAngle(dt / 2, vec3.UnitY);
 
 			MessageSystem.ProcessChanges();
 		}
@@ -98,9 +122,6 @@ namespace GmtkJam2019
 			scene.Renderer.DrawTargets();
 			mainTarget.Apply();
 			scene.Draw();
-
-			primitives.DrawLine(new vec3(0), new vec3(1, 2, 3), Color.Red);
-			primitives.Flush();
 
 			// Render 2D targets.
 			glDisable(GL_DEPTH_TEST);

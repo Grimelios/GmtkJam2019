@@ -10,4 +10,5 @@ uniform mat4 lightMatrix;
 void main()
 {
 	gl_Position = lightMatrix * vec4(vPosition, 1);
+	//fSource = vSource;
 }
