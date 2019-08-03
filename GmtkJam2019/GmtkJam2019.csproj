@@ -93,5 +93,10 @@
   <ItemGroup>
     <Folder Include="Weapons\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Textures\Link.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

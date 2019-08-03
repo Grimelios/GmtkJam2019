@@ -28,6 +28,7 @@ namespace GmtkJam2019
 		private SpriteBatch sb;
 		private RenderTarget mainTarget;
 		private Sprite mainSprite;
+		private Sprite3D sprite3D;
 		private Camera3D camera;
 		private Canvas canvas;
 		private HybridSpace space;
@@ -71,6 +72,8 @@ namespace GmtkJam2019
 			player.VisionDisplay = visionDisplay;
 			player.Controller.Settings = settings;
 
+			sprite3D = new Sprite3D("Link.png");
+
 			scene = new Scene
 			{
 				Camera = camera,
@@ -79,8 +82,11 @@ namespace GmtkJam2019
 			};
 
 			scene.Add(player);
-			scene.Renderer.Add(new Model("Demo.obj"));
-			scene.Renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0));
+
+			var renderer = scene.Renderer;
+			renderer.Add(new Model("Demo.obj"));
+			renderer.Add(sprite3D);
+			renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0));
 
 			// Quick hack to give all enemies easy access to the player.
 			Enemy.Player = player;

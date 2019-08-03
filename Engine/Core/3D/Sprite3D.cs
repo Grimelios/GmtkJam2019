@@ -26,6 +26,8 @@ namespace Engine.Core._3D
 		{
 			Source = source;
 			origin = Utilities.ComputeOrigin(source.Width, source.Height, alignment);
+			scale = vec2.Ones;
+			Orientation = quat.Identity;
 		}
 
 		public QuadSource Source { get; }
@@ -35,7 +37,7 @@ namespace Engine.Core._3D
 
 		public vec2 Scale
 		{
-			get => throw new NotImplementedException();
+			get => scale;
 			set => scale = value * new vec2(Source.Width, Source.Height) / PixelDivisor;
 		}
 

@@ -6,6 +6,7 @@ namespace GmtkJam2019.Physics
 	{
 		private const int MaxSteps = 8;
 		private const float PhysicsStep = 1f / 120;
+		private const float Gravity = 10;
 
 		private List<HybridBody> bodies;
 
@@ -40,7 +41,15 @@ namespace GmtkJam2019.Physics
 		{
 			foreach (var body in bodies)
 			{
-				body.Position += body.Velocity * step;
+				var v = body.Velocity;
+
+				if (body.AffectedByGravity)
+				{
+					//v.y -= Gravity * step;
+					body.Velocity = v;
+				}
+
+				body.Position += v * step;
 			}
 		}
 	}

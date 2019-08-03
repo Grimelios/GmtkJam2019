@@ -133,18 +133,9 @@ namespace Engine.Graphics._3D.Rendering
 
 		public override unsafe void Draw(Model item, mat4? vp)
 		{
-			var mesh = item.Mesh;
-			var handle = mesh.Handle;
+			PrepareShader(item, vp);
 
-			if (vp.HasValue)
-			{
-				mat4 world = item.WorldMatrix;
-				quat orientation = item.Orientation;
-
-				Shader.SetUniform("orientation", orientation.ToMat4);
-				Shader.SetUniform("mvp", vp.Value * world);
-				Shader.SetUniform("lightBiasMatrix", Light.BiasMatrix * world);
-			}
+			var handle = item.Mesh.Handle;
 
 			glDrawElementsBaseVertex(GL_TRIANGLES, (uint)handle.Count, GL_UNSIGNED_SHORT, (void*)handle.Offset,
 				handle.BaseVertex);

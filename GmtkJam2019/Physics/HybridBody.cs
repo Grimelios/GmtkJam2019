@@ -10,6 +10,7 @@ namespace GmtkJam2019.Physics
 			Shape = shape;
 			Height = height;
 			Owner = owner;
+			AffectedByGravity = true;
 		}
 
 		public vec3 Position { get; set; }
@@ -17,7 +18,7 @@ namespace GmtkJam2019.Physics
 		public Shape2D Shape { get; }
 
 		public object Owner { get; set; }
-
 		public int Height { get; set; }
+		public bool AffectedByGravity { get; set; }
 	}
 }

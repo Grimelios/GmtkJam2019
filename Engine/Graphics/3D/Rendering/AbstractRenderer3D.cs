@@ -88,6 +88,19 @@ namespace Engine.Graphics._3D.Rendering
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
 		}
 
+		protected void PrepareShader(T item, mat4? vp)
+		{
+			if (vp.HasValue)
+			{
+				mat4 world = item.WorldMatrix;
+				quat orientation = item.Orientation;
+
+				Shader.SetUniform("orientation", orientation.ToMat4);
+				Shader.SetUniform("mvp", vp.Value * world);
+				Shader.SetUniform("lightBiasMatrix", Light.BiasMatrix * world);
+			}
+		}
+
 		public abstract void Draw(T item, mat4? vp);
 	}
 }

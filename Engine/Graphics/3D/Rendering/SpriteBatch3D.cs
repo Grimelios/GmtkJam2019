@@ -34,9 +34,19 @@ namespace Engine.Graphics._3D.Rendering
 				new vec2(-1, 1)
 			};
 
+			float[] data = new float[8];
+
+			for (int i = 0; i < points.Length; i++)
+			{
+				var p = points[i];
+
+				data[i * 2] = p.x;
+				data[i * 2 + 1] = p.y;
+			}
+
 			glBindBuffer(GL_ARRAY_BUFFER, bufferId);
 
-			fixed (float* address = &points[0].x)
+			fixed (float* address = &data[0])
 			{
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8, address, GL_STATIC_DRAW);
 			}
@@ -72,6 +82,9 @@ namespace Engine.Graphics._3D.Rendering
 
 		public override void Draw(Sprite3D item, mat4? vp)
 		{
+			PrepareShader(item, vp);
+
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		}
 	}
 }

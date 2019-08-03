@@ -109,7 +109,7 @@ namespace Engine.Graphics._3D.Rendering
 			shadowMapShader.Use();
 
 			DrawShadow(modelRenderer);
-			//DrawShadow(spriteBatch3D);
+			DrawShadow(spriteBatch3D);
 		}
 
 		private void DrawShadow<T>(AbstractRenderer3D<T> renderer) where T : IRenderable3D
@@ -147,7 +147,7 @@ namespace Engine.Graphics._3D.Rendering
 			shadowMapTarget.Bind(0);
 
 			Draw(modelRenderer);
-			//Draw(spriteBatch3D);
+			Draw(spriteBatch3D);
 		}
 
 		private void Draw<T>(AbstractRenderer3D<T> renderer) where T : IRenderable3D
