@@ -37,9 +37,24 @@ namespace GmtkJam2019.Entities
 				new InputBind(InputTypes.Keyboard, GLFW_KEY_SPACE)
 			};
 
+			Crouch = new List<InputBind>
+			{
+				new InputBind(InputTypes.Keyboard, GLFW_KEY_SPACE)
+			};
+
 			Attack = new List<InputBind>
 			{
 				new InputBind(InputTypes.Mouse, GLFW_MOUSE_BUTTON_LEFT)
+			};
+
+			Melee = new List<InputBind>
+			{
+				new InputBind(InputTypes.Keyboard, GLFW_KEY_V)
+			};
+
+			Flashlight = new List<InputBind>
+			{
+				new InputBind(InputTypes.Keyboard, GLFW_KEY_F)
 			};
 		}
 
@@ -48,6 +63,9 @@ namespace GmtkJam2019.Entities
 		public List<InputBind> StrafeLeft { get; }
 		public List<InputBind> StrafeRight { get; }
 		public List<InputBind> Jump { get; }
+		public List<InputBind> Crouch { get; }
 		public List<InputBind> Attack { get; }
+		public List<InputBind> Melee { get; }
+		public List<InputBind> Flashlight { get; }
 	}
 }

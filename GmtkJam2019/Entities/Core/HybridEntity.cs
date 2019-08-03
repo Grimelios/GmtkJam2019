@@ -47,8 +47,9 @@ namespace GmtkJam2019.Entities.Core
 
 		protected HybridBody CreateBody(Scene scene, Shape2D shape, int height, bool isControlling = true)
 		{
-			var body = new HybridBody(shape, height, this);
+			var body = new HybridBody(shape, height, false, this);
 			body.Position = position;
+
 			scene.World.Add(body);
 
 			if (isControlling)

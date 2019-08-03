@@ -7,6 +7,7 @@ using Engine.Graphics._2D;
 using Engine.Graphics._3D;
 using Engine.Interfaces;
 using Engine.Messaging;
+using Engine.Shapes._2D;
 using Engine.UI;
 using Engine.Utility;
 using Engine.View;
@@ -55,9 +56,34 @@ namespace GmtkJam2019
 			camera.FarPlane = Properties.GetFloat("camera.far.plane");
 			//camera.IsOrthographic = true;
 
+			vec2[] border =
+			{
+				new vec2(-1, -1), 
+				new vec2(1, -1), 
+				new vec2(1, 1), 
+				new vec2(-1, 1)
+			};
+
+			for (int i = 0; i < border.Length; i++)
+			{
+				border[i] *= 10;
+			}
+
 			sb = new SpriteBatch();
 			space = new HybridSpace();
 			world = new HybridWorld();
+			world.Add(new HybridBody(new Rectangle(5, 5, 3, 3), 10, true));
+			world.Add(new HybridBody(new Rectangle(-5, 5, 3, 3), 10, true));
+			world.Add(new HybridBody(new Rectangle(5, -5, 3, 3), 10, true));
+			world.Add(new HybridBody(new Rectangle(-5, -5, 3, 3), 10, true));
+
+			for (int i = 0; i < border.Length; i++)
+			{
+				vec2 p1 = border[i];
+				vec2 p2 = border[(i + 1) % 4];
+
+				world.Add(new HybridBody(new Line2D(p1, p2), 10, true));
+			}
 
 			mainTarget = new RenderTarget(Resolution.RenderWidth, Resolution.RenderHeight,
 				RenderTargetFlags.Color | RenderTargetFlags.Depth);
@@ -68,7 +94,7 @@ namespace GmtkJam2019
 
 			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
 			Player player = new Player(camera);
-			player.Position = new vec3(0, 4, 4);
+			player.Position = new vec3(0, 1, 4);
 			player.VisionDisplay = visionDisplay;
 			player.Controller.Settings = settings;
 
@@ -93,8 +119,7 @@ namespace GmtkJam2019
 
 			canvas = new Canvas();
 			canvas.Add(visionDisplay);
-
-			visionDisplay.RemoveEye();
+			canvas.Add(new GroundVisualizer(world));
 
 			MessageSystem.Subscribe(this, CoreMessageTypes.ResizeWindow, (messageType, data, dt) =>
 			{

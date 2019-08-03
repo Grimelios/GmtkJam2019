@@ -11,6 +11,7 @@ namespace GmtkJam2019.Entities
 	{
 		private Camera3D camera;
 		private PlayerData playerData;
+		private PlayerVisionDisplay visionDisplay;
 
 		public Player(Camera3D camera)
 		{
@@ -22,8 +23,15 @@ namespace GmtkJam2019.Entities
 			Health = MaxHealth;
 		}
 
-		public PlayerVisionDisplay VisionDisplay { get; set; }
 		public PlayerController Controller { get; }
+		public PlayerVisionDisplay VisionDisplay
+		{
+			set
+			{
+				visionDisplay = value;
+				visionDisplay.Health = Health;
+			}
+		}
 
 		public override vec3 Position
 		{
@@ -47,7 +55,13 @@ namespace GmtkJam2019.Entities
 		{
 			base.ApplyDamage(damage);
 
-			VisionDisplay.Health = Health;
+			visionDisplay.Health = Health;
+		}
+
+		public void RemoveEye()
+		{
+			visionDisplay.RemoveEye();
+			camera.IsOrthographic = true;
 		}
 	}
 }

@@ -69,6 +69,7 @@ namespace GmtkJam2019.UI
 			sprite.SourceRect = new Bounds2D(118, 12, 115, 61);
 			sprite.Mods = SpriteModifiers.None;
 			sprite.Position += new vec2(0, 6);
+			sprite.Color = Color.White;
 
 			isEyeRemoved = true;
 		}

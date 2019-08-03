@@ -66,6 +66,7 @@
     <Compile Include="Entities\PlayerData.cs" />
     <Compile Include="Interfaces\ITargetable.cs" />
     <Compile Include="MainGame.cs" />
+    <Compile Include="Physics\GroundVisualizer.cs" />
     <Compile Include="Physics\HybridBody.cs" />
     <Compile Include="Physics\HybridWorld.cs" />
     <Compile Include="Program.cs" />
@@ -91,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Json\" />
     <Folder Include="Weapons\" />
   </ItemGroup>
   <ItemGroup>
