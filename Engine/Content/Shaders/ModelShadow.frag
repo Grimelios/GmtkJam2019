@@ -9,8 +9,8 @@ out vec4 fragColor;
 uniform vec3 lightColor;
 uniform vec3 lightDirection;
 uniform float ambientIntensity;
-uniform sampler2D shadowSampler;
 uniform sampler2D textureSampler;
+uniform sampler2D shadowSampler;
 
 void main()
 {

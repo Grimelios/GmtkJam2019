@@ -78,7 +78,14 @@ namespace Engine.Graphics._3D.Rendering
 
 		public abstract void Add(T item);
 		public abstract void Remove(T item);
-		public abstract void Prepare();
+
+		public virtual void Prepare()
+		{
+			Shader.Apply();
+			Shader.SetUniform("lightDirection", Light.Direction);
+			Shader.SetUniform("lightColor", Light.Color.ToVec3());
+			Shader.SetUniform("ambientIntensity", Light.AmbientIntensity);
+		}
 
 		public virtual void PrepareShadow()
 		{

@@ -31,8 +31,8 @@ namespace Engine.Graphics._3D.Rendering
 			shader.AddAttribute<float>(3, GL_FLOAT);
 			shader.Initialize();
 			shader.Use();
-			shader.SetUniform("shadowSampler", 0);
-			shader.SetUniform("textureSampler", 1);
+			shader.SetUniform("textureSampler", 0);
+			shader.SetUniform("shadowSampler", 1);
 
 			Bind(shader, bufferId, indexId);
 		}
@@ -120,15 +120,12 @@ namespace Engine.Graphics._3D.Rendering
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_BACK);
 
-			Shader.Apply();
-			Shader.SetUniform("lightDirection", Light.Direction);
-			Shader.SetUniform("lightColor", Light.Color.ToVec3());
-			Shader.SetUniform("ambientIntensity", Light.AmbientIntensity);
+			base.Prepare();
 		}
 
 		protected override void Apply(Mesh key)
 		{
-			key.Texture.Bind(1);
+			key.Texture.Bind(0);
 		}
 
 		public override unsafe void Draw(Model item, mat4? vp)

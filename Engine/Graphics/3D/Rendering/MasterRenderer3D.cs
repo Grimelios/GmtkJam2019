@@ -146,7 +146,7 @@ namespace Engine.Graphics._3D.Rendering
 				return;
 			}
 
-			shadowMapTarget.Bind(0);
+			shadowMapTarget.Bind(1);
 
 			Draw(modelRenderer);
 			Draw(spriteBatch3D);
