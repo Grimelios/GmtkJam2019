@@ -19,13 +19,15 @@ namespace GmtkJam2019.Weapons
 			var player = (Player)Owner;
 			player.AimLine = new Line3D(Position, Position + direction * 1.5f);
 
-			var results = PhysicsHelper.Raycast(player.Eye, direction, Range, scene.WorldMesh);
+			var results = PhysicsHelper.Raycast(player.Eye, direction, Range, scene);
 
 			if (results != null)
 			{
 				var p = results.Position;
 				player.ShotLine = new Line3D(Position, p);
 				player.NormalLine = new Line3D(p, p + results.Normal * 1.5f);
+
+				results.Target?.ApplyDamage(1, direction);
 			}
 
 			base.PrimaryFire(scene, direction);

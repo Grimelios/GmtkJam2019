@@ -34,13 +34,13 @@ namespace Engine.Graphics._3D.Rendering
 				vec2.Ones
 			};
 
-			// Flipping the source order backwards causes sprites to appear the right way up.
+			// Modifying the source order causes sprites to appear the right way up (and not flipped horizontally).
 			vec2[] sources =
 			{
-				vec2.Ones,
-				vec2.UnitX,
 				vec2.UnitY,
-				vec2.Zero
+				vec2.Zero,
+				vec2.Ones,
+				vec2.UnitX
 			};
 
 			float[] data = new float[20];

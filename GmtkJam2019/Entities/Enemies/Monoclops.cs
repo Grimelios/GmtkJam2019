@@ -4,9 +4,8 @@ namespace GmtkJam2019.Entities.Enemies
 {
 	public class Monoclops : Enemy
 	{
-		public override void Initialize(Scene scene)
+		public Monoclops() : base(EnemyTypes.Monoclops)
 		{
-			base.Initialize(scene);
 		}
 	}
 }

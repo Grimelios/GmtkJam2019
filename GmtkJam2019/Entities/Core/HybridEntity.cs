@@ -1,4 +1,9 @@
-﻿using Engine.Core._3D;
+﻿using System;
+using System.Collections.Generic;
+using Engine;
+using Engine.Core._2D;
+using Engine.Core._3D;
+using Engine.Graphics;
 using Engine.Interfaces;
 using Engine.Interfaces._2D;
 using Engine.Interfaces._3D;
@@ -9,9 +14,16 @@ using GmtkJam2019.Sensors;
 
 namespace GmtkJam2019.Entities.Core
 {
-	public abstract class HybridEntity : IPositionable3D, IRotatable, IDynamic
+	public abstract class HybridEntity : IPositionable3D, IRotatable, IDynamic, IDisposable
 	{
+		private List<IPositionable3D> attachments;
+
 		private bool selfUpdate;
+
+		protected HybridEntity()
+		{
+			attachments = new List<IPositionable3D>();
+		}
 
 		protected vec3 position;
 
@@ -21,6 +33,7 @@ namespace GmtkJam2019.Entities.Core
 			set
 			{
 				position = value;
+				attachments.ForEach(a => a.Position = value);
 
 				if (!selfUpdate && ControllingBody != null)
 				{
@@ -36,11 +49,23 @@ namespace GmtkJam2019.Entities.Core
 
 		public bool IsMarkedForDestruction { get; set; }
 
-		protected virtual Sprite3D CreateSprite3D(Scene scene, string filename)
+		protected void Attach(IPositionable3D item)
 		{
-			var sprite = new Sprite3D(filename);
+			attachments.Add(item);
+		}
+
+		protected Sprite3D CreateSprite3D(Scene scene, string filename)
+		{
+			return CreateSprite3D(scene, ContentCache.GetTexture(filename));
+		}
+
+		protected Sprite3D CreateSprite3D(Scene scene, Texture texture)
+		{
+			var sprite = new Sprite3D(texture);
 			sprite.Position = position;
+
 			scene.Renderer.Add(sprite);
+			Attach(sprite);
 
 			return sprite;
 		}
@@ -51,6 +76,12 @@ namespace GmtkJam2019.Entities.Core
 			body.Position = position;
 
 			scene.World.Add(body);
+
+			// Controlling bodies are positioned manually.
+			if (!isControlling)
+			{
+				Attach(body);
+			}
 
 			if (isControlling)
 			{
@@ -64,7 +95,9 @@ namespace GmtkJam2019.Entities.Core
 		{
 			var sensor = new HybridSensor(shape, height, this);
 			sensor.Position = position;
+
 			scene.Space.Add(sensor);
+			Attach(sensor);
 
 			return sensor;
 		}
@@ -74,12 +107,20 @@ namespace GmtkJam2019.Entities.Core
 			Scene = scene;
 		}
 
+		public void Dispose()
+		{
+			if (ControllingBody != null)
+			{
+				Scene.World.Remove(ControllingBody);
+			}
+		}
+
 		public virtual void Update(float dt)
 		{
 			if (ControllingBody != null)
 			{
 				selfUpdate = true;
-				Position = ControllingBody.Position;
+				Position = ControllingBody.Position + new vec3(0, ControllingBody.Height / 2f, 0);
 				selfUpdate = false;
 			}
 		}

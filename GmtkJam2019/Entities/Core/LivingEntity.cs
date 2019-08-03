@@ -1,4 +1,7 @@
-﻿using GmtkJam2019.Interfaces;
+﻿using Engine.Graphics;
+using Engine.Shapes._2D;
+using GlmSharp;
+using GmtkJam2019.Interfaces;
 
 namespace GmtkJam2019.Entities.Core
 {
@@ -7,11 +10,14 @@ namespace GmtkJam2019.Entities.Core
 		public int Health { get; set; }
 		public int MaxHealth { get; set; }
 
+		public virtual Texture CollisionTexture => null;
+		public virtual Rectangle CollisionBounds => null;
+
 		protected virtual void OnDeath()
 		{
 		}
 
-		public virtual void ApplyDamage(int damage)
+		public virtual void ApplyDamage(int damage, vec3 direction)
 		{
 			Health -= damage;
 

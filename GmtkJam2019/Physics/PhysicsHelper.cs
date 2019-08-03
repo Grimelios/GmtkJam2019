@@ -1,6 +1,8 @@
 ﻿using Engine.Graphics._3D;
 using Engine.Utility;
 using GlmSharp;
+using GmtkJam2019.Entities.Core;
+using GmtkJam2019.Interfaces;
 
 namespace GmtkJam2019.Physics
 {
@@ -8,7 +10,26 @@ namespace GmtkJam2019.Physics
 	{
 		private const float Epsilon = 0.0000001f;
 
-		public static RaycastResults Raycast(vec3 origin, vec3 direction, float range, Mesh mesh)
+		public static RaycastResults Raycast(vec3 origin, vec3 direction, float range, Scene scene)
+		{
+			vec3 closestHit = vec3.MaxValue;
+			vec3 closestNormal = vec3.Zero;
+
+			bool hitFound = CheckMesh(scene.WorldMesh, origin, direction, range, ref closestHit, ref closestNormal);
+
+			ITargetable target;
+
+			// The returned entity (null or not) determines whether a hit occurred.
+			if ((target = CheckEntities(origin, direction, range, ref closestHit, ref closestNormal)) != null)
+			{
+				hitFound = true;
+			}
+
+			return hitFound ? new RaycastResults(closestHit, closestNormal, target) : null;
+		}
+
+		private static bool CheckMesh(Mesh mesh, vec3 origin, vec3 direction, float range, ref vec3 closestHit,
+			ref vec3 closestNormal)
 		{
 			var points = mesh.Points;
 			var normals = mesh.Normals;
@@ -17,8 +38,6 @@ namespace GmtkJam2019.Physics
 
 			vec3 ray = direction * range;
 			vec3 currentHit = vec3.Zero;
-			vec3 closestHit = vec3.MaxValue;
-			vec3 closestNormal = vec3.Zero;
 
 			bool hitFound = false;
 
@@ -46,7 +65,7 @@ namespace GmtkJam2019.Physics
 				}
 			}
 
-			return hitFound ? new RaycastResults(closestHit, closestNormal, null) : null;
+			return hitFound;
 		}
 
 		private static bool SolveTriangle(vec3 p0, vec3 p1, vec3 p2, vec3 origin, vec3 ray, ref vec3 hitPosition)
@@ -94,6 +113,12 @@ namespace GmtkJam2019.Physics
 			hitPosition = origin + ray * t;
 
 			return true;
+		}
+
+		private static ITargetable CheckEntities(vec3 origin, vec3 direction, float range, ref vec3 closestHit,
+			ref vec3 closestNormal)
+		{
+			return null;
 		}
 	}
 }

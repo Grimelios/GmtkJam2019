@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Content\Json\Enemies.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Meshes\Cube.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -58,6 +61,8 @@
     <Compile Include="Entities\Core\LivingEntity.cs" />
     <Compile Include="Entities\Core\Scene.cs" />
     <Compile Include="Entities\Enemies\Enemy.cs" />
+    <Compile Include="Entities\Enemies\EnemyData.cs" />
+    <Compile Include="Entities\Enemies\EnemyTypes.cs" />
     <Compile Include="Entities\Enemies\Monoclops.cs" />
     <Compile Include="Entities\Objects\Door.cs" />
     <Compile Include="Entities\Player.cs" />
@@ -96,9 +101,7 @@
       <HintPath>..\packages\GlmSharp.0.9.8\lib\Net45\GlmSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Json\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Content\Textures\Link.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

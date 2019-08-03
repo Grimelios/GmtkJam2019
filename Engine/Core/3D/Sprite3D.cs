@@ -15,7 +15,8 @@ namespace Engine.Core._3D
 		private vec2 scale;
 		private ivec2 origin;
 
-		public Sprite3D(string filename) : this(ContentCache.GetTexture(filename))
+		public Sprite3D(string filename, Alignments alignment = Alignments.Center) :
+			this(ContentCache.GetTexture(filename), alignment)
 		{
 		}
 
@@ -24,7 +25,8 @@ namespace Engine.Core._3D
 		public Sprite3D(QuadSource source, Alignments alignment = Alignments.Center)
 		{
 			Source = source;
-			origin = Utilities.ComputeOrigin(source.Width, source.Height, alignment);
+			origin = Utilities.ComputeOrigin(source.Width, source.Height, alignment) -
+				new ivec2(source.Width, source.Height) / 2;
 			Scale = vec2.Ones;
 			Orientation = quat.Identity;
 			IsShadowCaster = true;
