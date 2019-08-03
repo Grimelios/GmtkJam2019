@@ -20,8 +20,8 @@ namespace Engine.Graphics._3D.Rendering
 			shader.AddAttribute<float>(2, GL_FLOAT);
 			shader.Initialize();
 			shader.Use();
-			shader.SetUniform("shadowSampler", 0);
-			shader.SetUniform("textureSampler", 1);
+			shader.SetUniform("textureSampler", 0);
+			shader.SetUniform("shadowSampler", 1);
 
 			Bind(shader, bufferId, indexId);
 
@@ -34,12 +34,13 @@ namespace Engine.Graphics._3D.Rendering
 				vec2.Ones
 			};
 
+			// Flipping the source order backwards causes sprites to appear the right way up.
 			vec2[] sources =
 			{
-				vec2.Zero,
-				vec2.UnitY,
+				vec2.Ones,
 				vec2.UnitX,
-				vec2.Ones
+				vec2.UnitY,
+				vec2.Zero
 			};
 
 			float[] data = new float[20];

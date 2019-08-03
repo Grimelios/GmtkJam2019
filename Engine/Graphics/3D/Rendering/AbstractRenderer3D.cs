@@ -79,19 +79,19 @@ namespace Engine.Graphics._3D.Rendering
 		public abstract void Add(T item);
 		public abstract void Remove(T item);
 
+		public virtual void PrepareShadow()
+		{
+			glBindVertexArray(shadowVao);
+			glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
+		}
+
 		public virtual void Prepare()
 		{
 			Shader.Apply();
 			Shader.SetUniform("lightDirection", Light.Direction);
 			Shader.SetUniform("lightColor", Light.Color.ToVec3());
 			Shader.SetUniform("ambientIntensity", Light.AmbientIntensity);
-		}
-
-		public virtual void PrepareShadow()
-		{
-			glBindVertexArray(shadowVao);
-			glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
 		}
 
 		protected void PrepareShader(T item, mat4? vp)

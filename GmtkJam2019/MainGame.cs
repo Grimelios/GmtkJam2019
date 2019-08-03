@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Engine;
 using Engine.Core;
 using Engine.Core._2D;
@@ -148,9 +149,17 @@ namespace GmtkJam2019
 			MessageSystem.Unsubscribe(this);
 		}
 
+		private float rotation;
+
 		protected override void Update(float dt)
 		{
+			float x = (float)Math.Cos(rotation);
+			float y = (float)Math.Sin(rotation);
+
+			rotation += dt / 3;
+
 			scene.Update(dt);
+			scene.Renderer.Light.Direction = Utilities.Normalize(new vec3(x, -0.25f, y));
 			world.Step(dt);
 			camera.Update(dt);
 

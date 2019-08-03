@@ -15,10 +15,12 @@ uniform sampler2D textureSampler;
 void main()
 {
 	vec4 color = texture(textureSampler, fSource);
-	vec3 normal = (vec4(1, 0, 0, 1) * orientation).xyz;
+	vec3 normal = (vec4(0, 0, 1, 1) * orientation).xyz;
 
 	float shadowValue = texture(shadowSampler, fShadowMapCoords.xy).r;
-	float d = dot(-lightDirection, normal);
+
+	// Sprites are lit from both sides (i.e. their normal kinda faces in both directions), hence the absolute value.
+	float d = abs(dot(-lightDirection, normal));
 	float bias = 0.001;
 	float lightIntensity;
 

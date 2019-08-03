@@ -1,6 +1,5 @@
 ﻿using System;
 using Engine.Core._2D;
-using Engine.Interfaces;
 using Engine.Interfaces._2D;
 using Engine.Interfaces._3D;
 using Engine.Utility;
@@ -26,8 +25,9 @@ namespace Engine.Core._3D
 		{
 			Source = source;
 			origin = Utilities.ComputeOrigin(source.Width, source.Height, alignment);
-			scale = vec2.Ones;
+			Scale = vec2.Ones;
 			Orientation = quat.Identity;
+			IsShadowCaster = true;
 		}
 
 		public QuadSource Source { get; }
@@ -58,7 +58,7 @@ namespace Engine.Core._3D
 		{
 			// By shifting the world matrix using the origin, all sprites (regardless of transform or alignment) can be
 			// rendered using the same unit square in GPU memory.
-			vec3 correction = new vec3(origin, 0) * Orientation;
+			vec3 correction = new vec3((vec2)origin / PixelDivisor, 0) * Orientation;
 
 			WorldMatrix = mat4.Translate(Position + correction) * Orientation.ToMat4 * mat4.Scale(new vec3(scale, 0));
 		}
