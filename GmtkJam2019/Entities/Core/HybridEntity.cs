@@ -15,21 +15,21 @@ namespace GmtkJam2019.Entities.Core
 
 		protected vec3 position;
 
-		public vec3 Position
+		public virtual vec3 Position
 		{
 			get => position;
 			set
 			{
 				position = value;
 
-				if (!selfUpdate)
+				if (!selfUpdate && ControllingBody != null)
 				{
-					Body.Position = value;
+					ControllingBody.Position = value;
 				}
 			}
 		}
 
-		public HybridBody Body { get; protected set; }
+		public HybridBody ControllingBody { get; protected set; }
 		public Scene Scene { get; set; }
 
 		public float Rotation { get; set; }
@@ -39,14 +39,30 @@ namespace GmtkJam2019.Entities.Core
 		protected virtual Sprite3D CreateSprite3D(Scene scene, string filename)
 		{
 			var sprite = new Sprite3D(filename);
+			sprite.Position = position;
 			scene.Renderer.Add(sprite);
 
 			return sprite;
 		}
 
+		protected HybridBody CreateBody(Scene scene, Shape2D shape, int height, bool isControlling = true)
+		{
+			var body = new HybridBody(shape, height, this);
+			body.Position = position;
+			scene.World.Add(body);
+
+			if (isControlling)
+			{
+				ControllingBody = body;
+			}
+
+			return body;
+		}
+
 		protected HybridSensor CreateSensor(Scene scene, Shape2D shape, int height)
 		{
 			var sensor = new HybridSensor(shape, height, this);
+			sensor.Position = position;
 			scene.Space.Add(sensor);
 
 			return sensor;
@@ -59,10 +75,10 @@ namespace GmtkJam2019.Entities.Core
 
 		public virtual void Update(float dt)
 		{
-			if (Body != null)
+			if (ControllingBody != null)
 			{
 				selfUpdate = true;
-				Position = Body.Position;
+				Position = ControllingBody.Position;
 				selfUpdate = false;
 			}
 		}

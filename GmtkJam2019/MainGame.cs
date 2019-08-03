@@ -16,8 +16,10 @@ using GmtkJam2019.Entities.Core;
 using GmtkJam2019.Entities.Enemies;
 using GmtkJam2019.Physics;
 using GmtkJam2019.Sensors;
+using GmtkJam2019.Settings;
 using GmtkJam2019.UI;
 using static Engine.GL;
+using static Engine.GLFW;
 
 namespace GmtkJam2019
 {
@@ -31,7 +33,7 @@ namespace GmtkJam2019
 		private HybridSpace space;
 		private HybridWorld world;
 		private Scene scene;
-		private Model model;
+		private GameSettings settings;
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
@@ -40,11 +42,12 @@ namespace GmtkJam2019
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPrimitiveRestartIndex(Constants.RestartIndex);
 
+			// This hides the cursor and lets it function properly for an FPS.
+			glfwSetInputMode(window.Address, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 			Properties.Load("Render.properties");
 
 			camera = new Camera3D();
-			camera.Position = new vec3(0, 8, 8);
-			camera.Orientation = mat4.LookAt(camera.Position, vec3.Zero, vec3.UnitY).ToQuaternion;
 			camera.OrthoWidth = Properties.GetFloat("camera.ortho.width");
 			camera.OrthoHeight = Properties.GetFloat("camera.ortho.height");
 			camera.NearPlane = Properties.GetFloat("camera.near.plane");
@@ -60,6 +63,14 @@ namespace GmtkJam2019
 			mainSprite = new Sprite(mainTarget, null, Alignments.Left | Alignments.Top);
 			mainSprite.Mods = SpriteModifiers.FlipVertical;
 
+			settings = new GameSettings();
+
+			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
+			Player player = new Player(camera);
+			player.Position = new vec3(0, 4, 4);
+			player.VisionDisplay = visionDisplay;
+			player.Controller.Settings = settings;
+
 			scene = new Scene
 			{
 				Camera = camera,
@@ -67,14 +78,9 @@ namespace GmtkJam2019
 				World = world
 			};
 
-			model = new Model("Demo.obj");
-
-			scene.Renderer.Add(model);
+			scene.Add(player);
+			scene.Renderer.Add(new Model("Demo.obj"));
 			scene.Renderer.Light.Direction = Utilities.Normalize(new vec3(1, -0.25f, 0));
-
-			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
-			Player player = new Player(camera);
-			player.VisionDisplay = visionDisplay;
 
 			// Quick hack to give all enemies easy access to the player.
 			Enemy.Player = player;
@@ -107,7 +113,6 @@ namespace GmtkJam2019
 			scene.Update(dt);
 			world.Step(dt);
 			camera.Update(dt);
-			model.Orientation *= quat.FromAxisAngle(dt / 2, vec3.UnitY);
 
 			MessageSystem.ProcessChanges();
 		}

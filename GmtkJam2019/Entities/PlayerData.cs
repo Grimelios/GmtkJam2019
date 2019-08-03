@@ -14,11 +14,14 @@ namespace GmtkJam2019.Entities
 			RunDeceleration = 180;
 			RunMaxSpeed = 10;
 			ViewOffset = 0.7f;
+			MaxPitch = 1.45f;
 		}
 
 		public float RunAcceleration { get; }
 		public float RunDeceleration { get; }
 		public float RunMaxSpeed { get; }
+
 		public float ViewOffset { get; }
+		public float MaxPitch;
 	}
 }

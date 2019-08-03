@@ -11,33 +11,43 @@ namespace GmtkJam2019.Entities
 	{
 		private Camera3D camera;
 		private PlayerData playerData;
-		private PlayerController controller;
 
 		public Player(Camera3D camera)
 		{
 			this.camera = camera;
 
 			playerData = new PlayerData();
-			controller = new PlayerController(this, playerData, camera);
-			Body = new HybridBody(new Circle(0.5f), 2, this);
+			Controller = new PlayerController(this, playerData, camera);
 			MaxHealth = 3;
 			Health = MaxHealth;
 		}
 
 		public PlayerVisionDisplay VisionDisplay { get; set; }
+		public PlayerController Controller { get; }
+
+		public override vec3 Position
+		{
+			get => base.Position;
+			set
+			{
+				camera.Position = position + new vec3(0, playerData.ViewOffset, 0);
+
+				base.Position = value;
+			}
+		}
+
+		public override void Initialize(Scene scene)
+		{
+			CreateBody(scene, new Circle(0.5f), 2);
+
+			base.Initialize(scene);
+		}
 
 		public override void ApplyDamage(int damage)
 		{
 			base.ApplyDamage(damage);
 
 			VisionDisplay.Health = Health;
-		}
-
-		public override void Update(float dt)
-		{
-			camera.Position = position + new vec3(0, playerData.ViewOffset, 0);
-
-			base.Update(dt);
 		}
 	}
 }

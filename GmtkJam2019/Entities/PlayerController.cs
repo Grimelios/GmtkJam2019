@@ -7,15 +7,22 @@ using Engine.Messaging;
 using Engine.Utility;
 using Engine.View;
 using GlmSharp;
+using GmtkJam2019.Settings;
 
 namespace GmtkJam2019.Entities
 {
 	public class PlayerController : IReceiver
 	{
+		// The aim divisor is an arbitrary value used to make mouse sensitivity more reasonable.
+		private const float AimDivisor = 10000f;
+
 		private Player player;
 		private PlayerData playerData;
 		private PlayerControls controls;
 		private Camera3D camera;
+
+		private float pitch;
+		private float yaw;
 
 		public PlayerController(Player player, PlayerData playerData, Camera3D camera)
 		{
@@ -31,6 +38,7 @@ namespace GmtkJam2019.Entities
 			});
 		}
 
+		public GameSettings Settings { get; set; }
 		public List<MessageHandle> MessageHandles { get; set; }
 
 		public void Dispose()
@@ -40,32 +48,68 @@ namespace GmtkJam2019.Entities
 
 		private void ProcessInput(FullInputData data, float dt)
 		{
+			ProcessAim((MouseData)data.GetData(InputTypes.Mouse));
+			ProcessRunning(data, dt);
+		}
+
+		private void ProcessAim(MouseData data)
+		{
+			ivec2 delta = data.Location - data.PreviousLocation;
+
+			if (Settings.InvertX)
+			{
+				delta.x *= -1;
+			}
+
+			if (Settings.InvertY)
+			{
+				delta.y *= -1;
+			}
+
+			var sensitivity = Settings.MouseSensitivity / AimDivisor;
+
+			pitch += delta.y * sensitivity;
+			pitch = Utilities.Clamp(pitch, -playerData.MaxPitch, playerData.MaxPitch);
+			yaw += delta.x * sensitivity;
+
+			if (yaw >= Constants.TwoPi)
+			{
+				yaw -= Constants.TwoPi;
+			}
+			else if (yaw <= -Constants.TwoPi)
+			{
+				yaw += Constants.TwoPi;
+			}
+
+			camera.Orientation = quat.FromAxisAngle(pitch, vec3.UnitX) * quat.FromAxisAngle(yaw, vec3.UnitY);
+			player.Rotation = yaw;
+		}
+
+		private void ProcessRunning(FullInputData data, float dt)
+		{
 			bool forward = data.Query(controls.RunForward, InputStates.Held);
 			bool back = data.Query(controls.RunBack, InputStates.Held);
 			bool left = data.Query(controls.StrafeLeft, InputStates.Held);
 			bool right = data.Query(controls.StrafeRight, InputStates.Held);
-			bool accelerationActive = false;
 
 			vec2 acceleration = vec2.Zero;
 
 			if (forward ^ back)
 			{
-				acceleration.y = forward ? 1 : -1;
-				accelerationActive = true;
+				acceleration.y = forward ? -1 : 1;
 			}
 
 			if (left ^ right)
 			{
 				acceleration.x = left ? -1 : 1;
-				accelerationActive = true;
 			}
 
-			var body = player.Body;
-			var velocity = body.Velocity.swizzle.xz;
-			var v = body.Velocity.swizzle.xz;
+			var body = player.ControllingBody;
+			var velocity = body.Velocity;
+			var v = velocity.swizzle.xz;
 
 			// Accelerate.
-			if (accelerationActive)
+			if (acceleration != vec2.Zero)
 			{
 				float rotation = player.Rotation;
 				float max = playerData.RunMaxSpeed;

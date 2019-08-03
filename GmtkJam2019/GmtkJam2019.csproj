@@ -71,6 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Sensors\HybridSensor.cs" />
     <Compile Include="Sensors\HybridSpace.cs" />
+    <Compile Include="Settings\GameSettings.cs" />
     <Compile Include="UI\PlayerVisionDisplay.cs" />
     <Compile Include="UI\SpeechDisplay.cs" />
   </ItemGroup>
