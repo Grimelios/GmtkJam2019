@@ -5,6 +5,7 @@ using Engine.Input.Data;
 using Engine.Interfaces;
 using Engine.Messaging;
 using Engine.Utility;
+using Engine.View;
 using GlmSharp;
 
 namespace GmtkJam2019.Entities
@@ -14,10 +15,13 @@ namespace GmtkJam2019.Entities
 		private Player player;
 		private PlayerData playerData;
 		private PlayerControls controls;
+		private Camera3D camera;
 
-		public PlayerController(Player player, PlayerData playerData)
+		public PlayerController(Player player, PlayerData playerData, Camera3D camera)
 		{
 			this.player = player;
+			this.playerData = playerData;
+			this.camera = camera;
 
 			controls = new PlayerControls();
 

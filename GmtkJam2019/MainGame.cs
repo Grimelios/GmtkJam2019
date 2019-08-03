@@ -1,10 +1,19 @@
-﻿using Engine;
+﻿using System.Collections.Generic;
+using Engine;
+using Engine.Core;
 using Engine.Core._2D;
+using Engine.Core._3D;
 using Engine.Graphics._2D;
+using Engine.Graphics._3D;
 using Engine.Messaging;
 using Engine.UI;
 using Engine.View;
+using GlmSharp;
 using GmtkJam2019.Entities;
+using GmtkJam2019.Entities.Core;
+using GmtkJam2019.Entities.Enemies;
+using GmtkJam2019.Physics;
+using GmtkJam2019.Sensors;
 using GmtkJam2019.UI;
 using static Engine.GL;
 
@@ -17,10 +26,14 @@ namespace GmtkJam2019
 		private Sprite mainSprite;
 		private Camera3D camera;
 		private Canvas canvas;
+		private HybridSpace space;
+		private HybridWorld world;
+		private Scene scene;
+		private PrimitiveRenderer3D primitives;
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
-			glClearColor(0, 0, 0, 1);
+			glClearColor(1, 1, 1, 1);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPrimitiveRestartIndex(Constants.RestartIndex);
@@ -28,27 +41,48 @@ namespace GmtkJam2019
 			Properties.Load("Render.properties");
 
 			camera = new Camera3D();
+			camera.Position = new vec3(0, 4, 4);
+			camera.Orientation = mat4.LookAt(camera.Position, vec3.Zero, vec3.UnitY).ToQuaternion;
 			camera.IsOrthographic = true;
 
 			sb = new SpriteBatch();
+			space = new HybridSpace();
+			world = new HybridWorld();
 
 			mainTarget = new RenderTarget(Resolution.RenderWidth, Resolution.RenderHeight,
 				RenderTargetFlags.Color | RenderTargetFlags.Depth);
 			mainSprite = new Sprite(mainTarget, null, Alignments.Left | Alignments.Top);
 			mainSprite.Mods = SpriteModifiers.FlipVertical;
 
+			scene = new Scene
+			{
+				Camera = camera,
+				Space = space,
+				World = world
+			};
+
+			var model = new Model("Demo.obj");
+			scene.Renderer.Add(model);
+
 			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
-			Player player = new Player();
+			Player player = new Player(camera);
 			player.VisionDisplay = visionDisplay;
+
+			// Quick hack to give all enemies easy access to the player.
+			Enemy.Player = player;
 
 			canvas = new Canvas();
 			canvas.Add(visionDisplay);
 
 			visionDisplay.RemoveEye();
+
+			primitives = new PrimitiveRenderer3D(camera, 10000, 10000);
 		}
 
 		protected override void Update(float dt)
 		{
+			scene.Update(dt);
+			world.Step(dt);
 			camera.Update(dt);
 
 			MessageSystem.ProcessChanges();
@@ -61,7 +95,12 @@ namespace GmtkJam2019
 			glEnable(GL_CULL_FACE);
 			glDepthFunc(GL_LEQUAL);
 
+			scene.Renderer.DrawTargets();
 			mainTarget.Apply();
+			scene.Draw();
+
+			primitives.DrawLine(new vec3(0), new vec3(1, 2, 3), Color.Red);
+			primitives.Flush();
 
 			// Render 2D targets.
 			glDisable(GL_DEPTH_TEST);

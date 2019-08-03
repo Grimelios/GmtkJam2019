@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
-using Engine.Interfaces;
 
 namespace GmtkJam2019.Physics
 {
-	public class HybridWorld : IDynamic
+	public class HybridWorld
 	{
 		private const int MaxSteps = 8;
+		private const float PhysicsStep = 1f / 120;
 
 		private List<HybridBody> bodies;
+
+		private float accumulator;
 
 		public HybridWorld()
 		{
@@ -16,13 +18,29 @@ namespace GmtkJam2019.Physics
 
 		public void Add(HybridBody body)
 		{
+			bodies.Add(body);
 		}
 
-		public void Update(float dt)
+		public void Step(float dt)
+		{
+			accumulator += dt;
+
+			int steps = 0;
+
+			while (accumulator >= PhysicsStep && steps < MaxSteps)
+			{
+				Solve(PhysicsStep);
+
+				accumulator -= PhysicsStep;
+				steps++;
+			}
+		}
+
+		private void Solve(float step)
 		{
 			foreach (var body in bodies)
 			{
-				body.Position += body.Velocity * dt;
+				body.Position += body.Velocity * step;
 			}
 		}
 	}
