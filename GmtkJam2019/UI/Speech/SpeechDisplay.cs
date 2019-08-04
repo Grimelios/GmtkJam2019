@@ -8,6 +8,7 @@ using Engine.Timing;
 using Engine.UI;
 using Engine.Utility;
 using GlmSharp;
+using GmtkJam2019.Sound;
 
 namespace GmtkJam2019.UI.Speech
 {
@@ -74,6 +75,8 @@ namespace GmtkJam2019.UI.Speech
 				lineStart.y += font.Size;
 				revealedLine.Clear();
 			}
+
+			Canvas.AudioPlayback.Play(SoundEffects.Speech);
 
 			return true;
 		}

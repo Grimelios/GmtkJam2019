@@ -3,6 +3,7 @@ using Engine;
 using Engine.Graphics._3D;
 using Engine.Graphics._3D.Rendering;
 using Engine.Interfaces;
+using Engine.Sound;
 using Engine.View;
 using GmtkJam2019.Interfaces;
 using GmtkJam2019.Physics;
@@ -18,6 +19,7 @@ namespace GmtkJam2019.Entities.Core
 		{
 			entities = new List<HybridEntity>();
 			Targets = new List<ITargetable>();
+			AudioPlayback = new AudioPlayback();
 
 			Renderer = new MasterRenderer3D();
 			Renderer.ShadowNearPlane = Properties.GetFloat("shadow.near.plane");
@@ -28,6 +30,7 @@ namespace GmtkJam2019.Entities.Core
 		public HybridSpace Space { get; set; }
 		public HybridWorld World { get; set; }
 		public MasterRenderer3D Renderer { get; }
+		public AudioPlayback AudioPlayback { get; set; }
 
 		// These are used to faciliate ray-traced weapons.
 		public Mesh WorldMesh { get; set; }

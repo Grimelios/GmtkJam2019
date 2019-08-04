@@ -5,6 +5,7 @@ using Engine.Graphics._2D;
 using Engine.Interfaces;
 using Engine.Interfaces._2D;
 using Engine.Messaging;
+using Engine.Sound;
 using GlmSharp;
 
 namespace Engine.UI
@@ -27,6 +28,7 @@ namespace Engine.UI
 		}
 
 		public List<MessageHandle> MessageHandles { get; set; }
+		public AudioPlayback AudioPlayback { get; set; }
 
 		public bool IsVisible { get; set; }
 
@@ -39,6 +41,7 @@ namespace Engine.UI
 
 		public void Add(CanvasElement element)
 		{
+			element.Canvas = this;
 			elements.Add(element);
 			PlaceElement(element);
 

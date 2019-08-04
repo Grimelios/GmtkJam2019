@@ -91,6 +91,7 @@
     <Compile Include="Sensors\HybridSensor.cs" />
     <Compile Include="Sensors\HybridSpace.cs" />
     <Compile Include="Settings\GameSettings.cs" />
+    <Compile Include="Sound\SoundEffects.cs" />
     <Compile Include="UI\FullscreenFade.cs" />
     <Compile Include="UI\PlayerVisionDisplay.cs" />
     <Compile Include="UI\Reticle.cs" />
@@ -113,6 +114,10 @@
     <Reference Include="GlmSharp, Version=0.9.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GlmSharp.0.9.8\lib\Net45\GlmSharp.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Fonts\Default_0.png">
@@ -121,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Textures\Link.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Content\Sounds\Speech.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -53,6 +53,7 @@ namespace Engine.UI
 
 		public ivec2 Offset { get; set; }
 		public Bounds2D Bounds { get; protected set; }
+		public Canvas Canvas { get; set; }
 
 		public virtual void Dispose()
 		{

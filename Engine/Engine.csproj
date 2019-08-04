@@ -194,6 +194,10 @@
     <Compile Include="Smoothers\3D\PositionSmoother3D.cs" />
     <Compile Include="Smoothers\ColorSmoother.cs" />
     <Compile Include="Smoothers\Smoother.cs" />
+    <Compile Include="Sound\AudioPlayback.cs" />
+    <Compile Include="Sound\AutoDisposeFileReader.cs" />
+    <Compile Include="Sound\CachedSound.cs" />
+    <Compile Include="Sound\CachedSoundSampleProvider.cs" />
     <Compile Include="Timing\RepeatingTimer.cs" />
     <Compile Include="Timing\SingleTimer.cs" />
     <Compile Include="Timing\Timer.cs" />
@@ -274,10 +278,14 @@
     <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lidgren.Network.1.0.2\lib\net451\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>

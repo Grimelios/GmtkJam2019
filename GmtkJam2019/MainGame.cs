@@ -9,6 +9,7 @@ using Engine.Graphics._3D;
 using Engine.Interfaces;
 using Engine.Messaging;
 using Engine.Shapes._2D;
+using Engine.Sound;
 using Engine.UI;
 using Engine.Utility;
 using Engine.View;
@@ -107,10 +108,12 @@ namespace GmtkJam2019
 			player.Controller.Settings = settings;
 			player.Equip(new Pistol());
 
+			AudioPlayback audioPlayback = new AudioPlayback();
 			Model map = new Model("Demo.obj");
 
 			scene = new Scene
 			{
+				AudioPlayback = audioPlayback,
 				Camera = camera,
 				Space = space,
 				World = world
@@ -118,6 +121,8 @@ namespace GmtkJam2019
 
 			scene.Add(player);
 			scene.Add(new Monoclops());
+			scene.Add(new Monoclops { Position = new vec3(3, 0, 1)});
+			scene.Add(new Monoclops { Position = new vec3(0.5f, 0, 2) });
 			scene.WorldMesh = map.Mesh;
 
 			var renderer = scene.Renderer;
@@ -128,6 +133,7 @@ namespace GmtkJam2019
 			Enemy.Player = player;
 
 			canvas = new Canvas();
+			canvas.AudioPlayback = audioPlayback;
 			canvas.Add(visionDisplay);
 			canvas.Add(new FullscreenFade());
 
@@ -175,8 +181,8 @@ namespace GmtkJam2019
 
 			if (player.ShotLine != null)
 			{
-				primitives.Draw(player.ShotLine, Color.Red);
-				primitives.Draw(player.NormalLine, Color.Green);
+				//primitives.Draw(player.ShotLine, Color.Red);
+				//primitives.Draw(player.NormalLine, Color.Green);
 			}
 
 			primitives.Flush();

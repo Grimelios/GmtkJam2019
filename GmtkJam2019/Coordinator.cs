@@ -1,4 +1,7 @@
-﻿using Engine.Interfaces;
+﻿using System.Collections.Generic;
+using Engine.Input.Data;
+using Engine.Interfaces;
+using Engine.Messaging;
 using Engine.Timing;
 using Engine.UI;
 using GlmSharp;
@@ -8,7 +11,7 @@ using GmtkJam2019.UI.Speech;
 
 namespace GmtkJam2019
 {
-	public class Coordinator : IDynamic
+	public class Coordinator : IDynamic, IReceiver
 	{
 		private Canvas canvas;
 		private Player player;
@@ -74,6 +77,17 @@ namespace GmtkJam2019
 			}, durations[0]);
 
 			timer.Repeatable = true;
+			timer.Paused = true;
+
+			MessageSystem.Subscribe(this, CoreMessageTypes.Keyboard, (messageType, data, dt) =>
+			{
+				var kbData = (KeyboardData)data;
+
+				if (kbData.Query(Engine.GLFW.GLFW_KEY_P, InputStates.PressedThisFrame))
+				{
+					timer.Paused = false;
+				}
+			});
 		}
 
 		private void TriggerLine(string text, int offset)
@@ -91,5 +105,11 @@ namespace GmtkJam2019
 		{
 			timer.Update(dt);
 		}
+
+		public void Dispose()
+		{
+		}
+
+		public List<MessageHandle> MessageHandles { get; set; }
 	}
 }
