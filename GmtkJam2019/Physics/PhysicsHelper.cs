@@ -7,6 +7,7 @@ using Engine.Graphics._3D;
 using Engine.Utility;
 using GlmSharp;
 using GmtkJam2019.Entities.Core;
+using GmtkJam2019.Entities.Enemies;
 using GmtkJam2019.Interfaces;
 
 namespace GmtkJam2019.Physics
@@ -25,12 +26,13 @@ namespace GmtkJam2019.Physics
 			ITargetable target;
 
 			// The returned entity (null or not) determines whether a hit occurred.
-			if ((target = CheckEntities(scene.Targets, origin, direction, range, ref closestHit, ref closestNormal)) != null)
+			if ((target = CheckEntities(scene.Targets, origin, direction, range, ref closestHit, ref closestNormal,
+				out bool isHeadshot)) != null)
 			{
 				hitFound = true;
 			}
 
-			return hitFound ? new RaycastResults(closestHit, closestNormal, target) : null;
+			return hitFound ? new RaycastResults(closestHit, closestNormal, target, isHeadshot) : null;
 		}
 
 		private static bool CheckMesh(Mesh mesh, vec3 origin, vec3 direction, float range, ref vec3 closestHit,
@@ -121,21 +123,25 @@ namespace GmtkJam2019.Physics
 		}
 
 		private static ITargetable CheckEntities(List<ITargetable> targets, vec3 origin, vec3 direction, float range,
-			ref vec3 closestHit, ref vec3 closestNormal)
+			ref vec3 closestHit, ref vec3 closestNormal, out bool isHeadshot)
 		{
 			vec3 currentHit = vec3.Zero;
 
 			ITargetable targetHit = null;
 
+			isHeadshot = false;
+
 			foreach (var target in targets)
 			{
-				if (SolveTarget(target, origin, direction, range, ref currentHit, out vec3 normal))
+				if (SolveTarget(target, origin, direction, range, ref currentHit, out vec3 normal,
+					out bool localIsHeadshot))
 				{
 					if (Utilities.LengthSquared(currentHit) < Utilities.LengthSquared(closestHit))
 					{
 						closestHit = currentHit;
 						closestNormal = normal;
 						targetHit = target;
+						isHeadshot = localIsHeadshot;
 					}
 				}
 			}
@@ -144,8 +150,10 @@ namespace GmtkJam2019.Physics
 		}
 
 		private static bool SolveTarget(ITargetable target, vec3 origin, vec3 direction, float range,
-			ref vec3 hitPosition, out vec3 normal)
+			ref vec3 hitPosition, out vec3 normal, out bool isHeadshot)
 		{
+			isHeadshot = false;
+
 			float r = target.Rotation;
 
 			// All hitscan targets are vertical, billboarded sprites, so some calculations can be simplified.
@@ -166,14 +174,6 @@ namespace GmtkJam2019.Physics
 
 			float d = Utilities.Dot(normal, u);
 			float n = -Utilities.Dot(normal, w);
-
-			/*
-			if (Math.Abs(d) < Epsilon)
-			{
-				// The ray is parallel to the plane.
-				return false;
-			}
-			*/
 
 			// By this point, the ray is already guaranteed to be aiming towards the plane.
 			float s = n / d;
@@ -211,6 +211,15 @@ namespace GmtkJam2019.Physics
 			if (alpha == 0)
 			{
 				return false;
+			}
+
+			// Only enemies can be headshot.
+			if (target is Enemy enemy)
+			{
+				var data = enemy.Data;
+				var squared = Utilities.DistanceSquared(coords, new vec2(data.HeadshotX, data.HeadshotY));
+
+				isHeadshot = squared <= data.HeadshotRadius * data.HeadshotRadius;
 			}
 
 			hitPosition = i;

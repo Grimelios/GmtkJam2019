@@ -1,5 +1,4 @@
 ﻿using Engine.Graphics;
-using Engine.Shapes._2D;
 using GlmSharp;
 using GmtkJam2019.Interfaces;
 
@@ -19,7 +18,7 @@ namespace GmtkJam2019.Entities.Core
 		{
 		}
 
-		public virtual void ApplyDamage(int damage, vec3 direction)
+		public virtual void ApplyDamage(int damage, vec3 direction, bool isHeadshot)
 		{
 			Health -= damage;
 

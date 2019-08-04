@@ -11,6 +11,9 @@ namespace GmtkJam2019.Entities.Enemies
 		public string Texture { get; set; }
 
 		public int Health { get; set; }
+		public int HeadshotRadius { get; set; }
+		public int HeadshotX { get; set; }
+		public int HeadshotY { get; set; }
 
 		public float Radius { get; set; }
 		public float Height { get; set; }

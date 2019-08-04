@@ -73,7 +73,7 @@ namespace GmtkJam2019.Entities.Core
 			return sprite;
 		}
 
-		protected HybridBody CreateBody(Scene scene, Shape2D shape, int height, bool isControlling = true)
+		protected HybridBody CreateBody(Scene scene, Shape2D shape, float height, bool isControlling = true)
 		{
 			var body = new HybridBody(shape, height, false, this);
 			body.Position = position;
@@ -122,10 +122,10 @@ namespace GmtkJam2019.Entities.Core
 		{
 			components.Update(dt);
 
-			if (ControllingBody != null)
+			if (ControllingBody != null && ControllingBody.IsEnabled)
 			{
 				selfUpdate = true;
-				Position = ControllingBody.Position + new vec3(0, ControllingBody.Height / 2f, 0);
+				Position = ControllingBody.Position + new vec3(0, ControllingBody.Height / 2, 0);
 				selfUpdate = false;
 			}
 		}

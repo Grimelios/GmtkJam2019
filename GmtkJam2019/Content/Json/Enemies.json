@@ -1,8 +1,10 @@
 ﻿[
 	{
 		"Texture": "Link.png",
-		"Health": 3,
-		"Radius": 0.5,
-		"Height": 1.4
+		"Health": 30,
+		"HeadshotRadius": 56,
+		"HeadshotX": 99,
+		"HeadshotY": 40,
+		"Radius": 0.5
 	}
 ]

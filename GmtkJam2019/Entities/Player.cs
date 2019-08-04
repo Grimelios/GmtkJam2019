@@ -65,9 +65,9 @@ namespace GmtkJam2019.Entities
 			base.Initialize(scene);
 		}
 
-		public override void ApplyDamage(int damage, vec3 direction)
+		public override void ApplyDamage(int damage, vec3 direction, bool isHeadshot)
 		{
-			base.ApplyDamage(damage, direction);
+			base.ApplyDamage(damage, direction, isHeadshot);
 
 			visionDisplay.Health = Health;
 		}

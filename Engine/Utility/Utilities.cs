@@ -33,6 +33,11 @@ namespace Engine.Utility
 			return (int)((end - start) * t) + start;
 		}
 
+		public static float Lerp(float start, float end, float t)
+		{
+			return (end - start) * t + start;
+		}
+
 		public static float Length(vec2 v)
 		{
 			return (float)Math.Sqrt(LengthSquared(v));

@@ -10,6 +10,6 @@ namespace GmtkJam2019.Interfaces
 		Texture CollisionTexture { get; }
 		vec2 CollisionBounds { get; }
 
-		void ApplyDamage(int damage, vec3 direction);
+		void ApplyDamage(int damage, vec3 direction, bool isHeadshot);
 	}
 }

@@ -9,6 +9,7 @@ namespace GmtkJam2019.Weapons
 	public class Pistol : Weapon
 	{
 		private const float Range = 100000;
+		private const int Damage = 10;
 
 		public Pistol() : base(0)
 		{
@@ -25,7 +26,7 @@ namespace GmtkJam2019.Weapons
 				player.ShotLine = new Line3D(Position, p);
 				player.NormalLine = new Line3D(p, p + results.Normal * 1.5f);
 
-				results.Target?.ApplyDamage(1, direction);
+				results.Target?.ApplyDamage(Damage, direction, results.IsHeadshot);
 			}
 
 			base.PrimaryFire(scene, direction);

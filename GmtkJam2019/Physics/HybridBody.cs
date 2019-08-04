@@ -9,7 +9,7 @@ namespace GmtkJam2019.Physics
 	{
 		private float elevation;
 
-		public HybridBody(Shape2D shape, int height, bool isStatic, object owner = null)
+		public HybridBody(Shape2D shape, float height, bool isStatic, object owner = null)
 		{
 			Shape = shape;
 			Height = height;
@@ -40,8 +40,8 @@ namespace GmtkJam2019.Physics
 		public vec3 Velocity { get; set; }
 
 		public object Owner { get; set; }
-		public int Height { get; set; }
-		
+
+		public float Height { get; set; }	
 		public float Rotation { get; set; }
 
 		public bool AffectedByGravity { get; set; }

@@ -48,6 +48,12 @@
     <None Include="Content\Properties\Render.properties">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Shaders\AngledOrtho.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Shaders\AngledOrtho.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +69,7 @@
     <Compile Include="Entities\Enemies\Enemy.cs" />
     <Compile Include="Entities\Enemies\EnemyData.cs" />
     <Compile Include="Entities\Enemies\EnemyTypes.cs" />
+    <Compile Include="Entities\Enemies\HealthBar.cs" />
     <Compile Include="Entities\Enemies\Monoclops.cs" />
     <Compile Include="Entities\Objects\Door.cs" />
     <Compile Include="Entities\Player.cs" />
