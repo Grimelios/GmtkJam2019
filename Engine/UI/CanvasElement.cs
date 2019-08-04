@@ -47,6 +47,7 @@ namespace Engine.UI
 
 		public bool Visible { get; set; }
 		public bool UsesRenderTarget { get; protected set; }
+		public bool MarkedForDestruction { get; protected set; }
 
 		public Alignments Anchor { get; set; }
 

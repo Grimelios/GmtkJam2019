@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Content\Fonts\Default.fnt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Json\Enemies.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -63,6 +66,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coordinator.cs" />
     <Compile Include="Entities\Core\HybridEntity.cs" />
     <Compile Include="Entities\Core\LivingEntity.cs" />
     <Compile Include="Entities\Core\Scene.cs" />
@@ -87,9 +91,11 @@
     <Compile Include="Sensors\HybridSensor.cs" />
     <Compile Include="Sensors\HybridSpace.cs" />
     <Compile Include="Settings\GameSettings.cs" />
+    <Compile Include="UI\FullscreenFade.cs" />
     <Compile Include="UI\PlayerVisionDisplay.cs" />
     <Compile Include="UI\Reticle.cs" />
-    <Compile Include="UI\SpeechDisplay.cs" />
+    <Compile Include="UI\Speech\SpeechDisplay.cs" />
+    <Compile Include="UI\Speech\SpeechGlyph.cs" />
     <Compile Include="Weapons\Pistol.cs" />
     <Compile Include="Weapons\Weapon.cs" />
   </ItemGroup>
@@ -108,7 +114,11 @@
       <HintPath>..\packages\GlmSharp.0.9.8\lib\Net45\GlmSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Content\Fonts\Default_0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <None Include="Content\Textures\Link.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

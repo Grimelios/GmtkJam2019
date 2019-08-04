@@ -58,6 +58,11 @@ namespace GmtkJam2019.Entities
 		public Line3D ShotLine { get; set; }
 		public Line3D NormalLine { get; set; }
 
+		public bool InputLocked
+		{
+			set => Controller.InputLocked = value;
+		}
+
 		public override void Initialize(Scene scene)
 		{
 			CreateBody(scene, new Circle(0.5f), 2);

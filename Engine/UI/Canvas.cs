@@ -18,6 +18,7 @@ namespace Engine.UI
 		{
 			elements = new List<CanvasElement>();
 			renderTargetUsers = new List<IRenderTargetUser2D>();
+			IsVisible = true;
 
 			MessageSystem.Subscribe(this, CoreMessageTypes.ResizeWindow, (messageType, data, dt) =>
 			{
@@ -26,6 +27,8 @@ namespace Engine.UI
 		}
 
 		public List<MessageHandle> MessageHandles { get; set; }
+
+		public bool IsVisible { get; set; }
 
 		public void Dispose()
 		{
@@ -77,6 +80,11 @@ namespace Engine.UI
 
 		public void Update(float dt)
 		{
+			if (!IsVisible)
+			{
+				return;
+			}
+
 			foreach (CanvasElement element in elements)
 			{
 				if (element.Visible)
@@ -84,15 +92,36 @@ namespace Engine.UI
 					element.Update(dt);
 				}
 			}
+
+			for (int i = elements.Count - 1; i >= 0; i--)
+			{
+				var element = elements[i];
+
+				if (element.MarkedForDestruction)
+				{
+					element.Dispose();
+					elements.RemoveAt(i);
+				}
+			}
 		}
 
 		public void DrawTargets(SpriteBatch sb)
 		{
+			if (!IsVisible)
+			{
+				return;
+			}
+
 			renderTargetUsers.ForEach(u => u.DrawTargets(sb));
 		}
 
 		public void Draw(SpriteBatch sb)
 		{
+			if (!IsVisible)
+			{
+				return;
+			}
+
 			foreach (CanvasElement element in elements)
 			{
 				if (element.Visible)

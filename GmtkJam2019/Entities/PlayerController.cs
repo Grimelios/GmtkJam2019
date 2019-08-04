@@ -34,6 +34,7 @@ namespace GmtkJam2019.Entities
 			this.camera = camera;
 
 			controls = new PlayerControls();
+			InputLocked = true;
 
 			MessageSystem.Subscribe(this, CoreMessageTypes.Input, (messageType, data, dt) =>
 			{
@@ -44,6 +45,8 @@ namespace GmtkJam2019.Entities
 		public GameSettings Settings { get; set; }
 		public List<MessageHandle> MessageHandles { get; set; }
 
+		public bool InputLocked { get; set; }
+
 		public void Dispose()
 		{
 			MessageSystem.Unsubscribe(this);
@@ -51,6 +54,11 @@ namespace GmtkJam2019.Entities
 
 		private void ProcessInput(FullInputData data, float dt)
 		{
+			if (InputLocked)
+			{
+				return;
+			}
+
 			ProcessAim((MouseData)data.GetData(InputTypes.Mouse));
 			ProcessRunning(data, dt);
 			ProcessAttack(data);

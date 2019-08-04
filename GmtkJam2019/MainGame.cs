@@ -20,6 +20,7 @@ using GmtkJam2019.Physics;
 using GmtkJam2019.Sensors;
 using GmtkJam2019.Settings;
 using GmtkJam2019.UI;
+using GmtkJam2019.UI.Speech;
 using GmtkJam2019.Weapons;
 using static Engine.GL;
 using static Engine.GLFW;
@@ -39,6 +40,7 @@ namespace GmtkJam2019
 		private GameSettings settings;
 		private PrimitiveRenderer3D primitives;
 		private Player player;
+		private Coordinator coordinator;
 
 		public MainGame() : base("GMTK Jam 2019 - Grimelios")
 		{
@@ -97,6 +99,7 @@ namespace GmtkJam2019
 			settings = new GameSettings();
 
 			PlayerVisionDisplay visionDisplay = new PlayerVisionDisplay();
+			visionDisplay.Visible = false;
 
 			player = new Player(camera);
 			player.Position = new vec3(0, 0, 4);
@@ -126,7 +129,9 @@ namespace GmtkJam2019
 
 			canvas = new Canvas();
 			canvas.Add(visionDisplay);
-			canvas.Add(new Reticle());
+			canvas.Add(new FullscreenFade());
+
+			coordinator = new Coordinator(canvas, player);
 
 			MessageSystem.Subscribe(this, CoreMessageTypes.ResizeWindow, (messageType, data, dt) =>
 			{
@@ -151,6 +156,8 @@ namespace GmtkJam2019
 			scene.Update(dt);
 			world.Step(dt);
 			camera.Update(dt);
+			coordinator.Update(dt);
+			canvas.Update(dt);
 
 			MessageSystem.ProcessChanges();
 		}
